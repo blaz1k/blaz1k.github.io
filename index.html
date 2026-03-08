@@ -3,295 +3,407 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title content="m1v blazik">m1VWin - Главная</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <title>Угадай число — компьютер против вас</title>
     <style>
         * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
-        
         body {
-            font-family: "Pixelify Sans", serif;
-            background-color: #8b278b;
-            color: white;
+            background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
             min-height: 100vh;
-            image-rendering: pixelated;
-        }
-        
-        /* Шапка */
-        header {
-            background-color: #8b278b;
-            padding: 15px 30px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            margin-bottom: 20px;
-        }
-        
-        .logo {
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: #000000;
-            letter-spacing: 1px;
-        }
-        
-        .header-controls {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        
-        .btn {
-            font-family: "Pixelify Sans", serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            padding: 10px 25px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 3px 3px 0 #000;
-            text-decoration: none;
-            color: white;
-        }
-        
-        .btn-login {
-            background-color: #9d33ad;
-        }
-        
-        .btn-register {
-            background-color: #6a1b9a;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 5px 5px 0 #000;
-        }
-        
-        .btn:active {
-            transform: translateY(1px);
-            box-shadow: 2px 2px 0 #000;
-        }
-        
-        /* Основное содержимое */
-        .main-content {
-            display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 80vh;
-            padding: 30px;
-            background-color: #8b278b;
-            position: relative;
-            overflow: hidden;
+            margin: 0;
+            padding: 16px;
         }
-        
-        .content-wrapper {
-            display: flex;
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 48px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.08);
+            padding: 40px 32px;
+            max-width: 560px;
             width: 100%;
-            max-width: 1200px;
-            align-items: center;
-            justify-content: space-between;
-            gap: 40px;
+            transition: all 0.2s ease;
+            color: #e9f0ff;
         }
-        
-        .text-content {
-            flex: 1;
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            text-align: center;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #c9e2ff, #a0c8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 4px 6px #00000040);
+        }
+        .subhead {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #b0c8e5;
+            margin-bottom: 40px;
+            border-bottom: 1px dashed #3b4e6b;
+            padding-bottom: 20px;
+            font-weight: 300;
+        }
+        .guess-box {
+            background: #111c2f;
+            border-radius: 36px;
+            padding: 30px 20px;
+            margin-bottom: 28px;
+            box-shadow: inset 0 6px 10px #00000055, 0 10px 20px #00000040;
+            border: 1px solid #2d405b;
+        }
+        .guess-display {
+            font-size: 2.8rem;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            color: #d3e5ff;
+            text-shadow: 0 4px 8px #00000070;
+            word-break: break-word;
+        }
+        .guess-display span {
+            background: #00c3ff20;
+            padding: 8px 24px;
+            border-radius: 100px;
+            display: inline-block;
+            border: 2px solid #3e7bff;
+            box-shadow: 0 0 20px #3e7bff60;
+            font-family: 'Fira Mono', monospace;
+            margin: 0 6px;
             color: #fff;
-            text-shadow: 2px 2px 0 #000;
         }
-        
-        .text-content h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: #ffffff;
+        .range-info, .attempts {
+            font-size: 1.2rem;
+            text-align: center;
+            background: #1f3147;
+            padding: 12px 18px;
+            border-radius: 60px;
+            margin: 16px auto 8px;
+            width: fit-content;
+            border: 1px solid #3a5270;
+            box-shadow: inset 0 2px 5px #00000055;
+            color: #bdd3ff;
+            font-weight: 400;
         }
-        
-        .text-content p {
-            font-size: 1.8rem;
-            line-height: 1.5;
-            margin-bottom: 30px;
+        .range-info span, .attempts span {
+            font-weight: 700;
+            color: #ffdb9d;
+            background: #2a3f5a;
+            padding: 4px 12px;
+            border-radius: 40px;
+            margin: 0 4px;
         }
-        
-        .image-content {
-            flex: 1;
+        .controls {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 30px;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: center;
+            margin: 32px 0 18px;
         }
-        
-        .game-preview {
-            width: 100%;
-            max-width: 400px;
-            border: 5px solid #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-        }
-        
-        .start-btn {
-            background-color: #831d7e;
-            color: #ffffff;
-            font-size: 2rem;
-            padding: 15px 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 5px 5px 0 #000;
-            transition: all 0.3s;
+        .btn {
+            background: #263a54;
+            border: none;
+            border-radius: 60px;
+            padding: 16px 28px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #eaf2ff;
             cursor: pointer;
-            text-decoration: none;
+            box-shadow: 0 10px 0 #0f1a28, 0 8px 20px #00000080;
+            transition: all 0.08s linear;
+            border: 1px solid #55739b;
+            flex: 1 1 auto;
+            min-width: 140px;
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
         }
-        
-        .start-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 8px 8px 0 #000;
+        .btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 4px 0 #0f1a28, 0 8px 18px #00000080;
         }
-        
-        .start-btn:active {
-            transform: translateY(2px);
-            box-shadow: 3px 3px 0 #000;
-            
+        .btn:disabled {
+            opacity: 0.3;
+            transform: translateY(0);
+            box-shadow: 0 6px 0 #0f1a28, 0 8px 12px #00000060;
+            pointer-events: none;
+            filter: grayscale(0.5);
         }
-        
-        .start-btn img {
-            width: 40px;
-            height: 40px;
+        #lessBtn {
+            background: #374e72;
+            border-color: #6f93c7;
         }
-        
-        /* Декор элементы */
-        .pixel-corner {
-            position: absolute;
-            width: 150px;
-            height: 150px;
-            border: 5px solid #000000;
+        #greaterBtn {
+            background: #374e72;
+            border-color: #6f93c7;
         }
-        
-        .corner-top-left {
-            top: 20px;
-            left: 20px;
-            border-right: none;
-            border-bottom: none;
+        #equalBtn {
+            background: #2f7343;
+            border-color: #7fe081;
+            box-shadow: 0 10px 0 #1b4228, 0 8px 20px #00000080;
         }
-        
-        .corner-top-right {
-            top: 20px;
-            right: 20px;
-            border-left: none;
-            border-bottom: none;
+        #equalBtn:active {
+            transform: translateY(6px);
+            box-shadow: 0 4px 0 #1b4228, 0 8px 18px #00000080;
         }
-        
-        .corner-bottom-left {
-            bottom: 20px;
-            left: 20px;
-            border-right: none;
-            border-top: none;
+        .restart {
+            background: #4f3b7c;
+            border-color: #b292ff;
+            box-shadow: 0 8px 0 #2f2350, 0 8px 20px #00000080;
+            font-size: 1.3rem;
+            margin-top: 20px;
+            padding: 14px 24px;
+            width: 100%;
         }
-        
-        .corner-bottom-right {
-            bottom: 20px;
-            right: 20px;
-            border-left: none;
-            border-top: none;
+        .restart:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #2f2350, 0 8px 18px #00000080;
         }
-        
-        /* Адаптивность */
-        @media (max-width: 900px) {
-            .content-wrapper {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .text-content, .image-content {
-                width: 100%;
-                text-align: center;
-            }
-            
-            .text-content h1 {
-                font-size: 2.5rem;
-            }
-            
-            .text-content p {
-                font-size: 1.5rem;
-            }
-            
-            .logo {
-                font-size: 2.5rem;
-            }
-            
-            .btn {
-                font-size: 1.2rem;
-                padding: 8px 15px;
-            }
+        .message {
+            background: #111f30;
+            border-radius: 50px;
+            padding: 16px 20px;
+            font-size: 1.3rem;
+            text-align: center;
+            border-left: 6px solid #3e7bff;
+            color: #c1dbff;
+            font-weight: 500;
+            margin: 28px 0 8px;
+            box-shadow: inset 0 2px 10px #00000055;
+            word-break: break-word;
         }
-
-        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #6c88a8;
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+        @media (max-width: 480px) {
+            .container { padding: 24px 16px; }
+            h1 { font-size: 2rem; }
+            .guess-display { font-size: 2rem; }
+            .btn { font-size: 1.2rem; padding: 14px 16px; min-width: 110px; }
+        }
     </style>
 </head>
 <body>
-    <!-- Yandex.Metrika counter -->
-<script type="text/javascript" >
-   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-   m[i].l=1*new Date();
-   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+    <div class="container">
+        <h1>🔮 УГАДАЙ ЧИСЛО</h1>
+        <div class="subhead">Задумайте число от 1 до 100, а я отгадаю</div>
 
-   ym(102140620, "init", {
-        clickmap:true,
-        trackLinks:true,
-        accurateTrackBounce:true
-   });
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/102140620" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
-    <!-- Шапка сайта -->
-    <header>
-        <div class="logo">m1vvvWin</div>
-        <div class="header-controls">
-            <a href="#" class="btn btn-login">Войти</a>
-            <a href="#" class="btn btn-register">Регистрация</a>
-        </div>
-    </header>
-    
-    <!-- Основное содержимое -->
-    <div class="main-content">
-        <!-- Декоративные уголки -->
-
-        
-        <div class="content-wrapper">
-            <div class="text-content">
-                <h1>ДАБРO пАЖАЛАВАТ В НАШЕ КАЗИЧO!</h1>
-                <p>Вывод без комиссий, много розыгрышей, мало рекламы и высокий шанс победить!!!</p>
-                <p>проАавайте ваши квартиры и депайте всё прямо сюда!!!</p>
-                <p>пАдписЫваИтес на тгк @bl4z1kk</p>
+        <!-- Основной блок с предположением -->
+        <div class="guess-box">
+            <div class="guess-display">
+                <span id="guess">50</span> ?
             </div>
-            
-            <div class="image-content">
-                <img src="m1v.webp" alt="Игровой автомат" class="game-preview">
-                <a href="game1.html" class="start-btn">
-                    Начать
-                    <img src="play.png" alt="Играть">
-                </a>
+            <div class="range-info">
+                🎯 диапазон: <span id="low">1</span> — <span id="high">100</span>
+            </div>
+            <div class="attempts">
+                💡 попыток: <span id="attempts">0</span>
             </div>
         </div>
+
+        <!-- Кнопки ответов -->
+        <div class="controls">
+            <button class="btn" id="lessBtn" title="Моё число меньше">⬇️ Меньше</button>
+            <button class="btn" id="equalBtn" title="Точно в цель!">✅ Угадал!</button>
+            <button class="btn" id="greaterBtn" title="Моё число больше">⬆️ Больше</button>
+        </div>
+
+        <!-- Область для сообщений (победа/ошибка) -->
+        <div class="message" id="message">👀 Слушаю ваши подсказки...</div>
+
+        <!-- Кнопка перезапуска -->
+        <button class="btn restart" id="restartBtn">🔄 Сыграем ещё</button>
+        <footer>честно отвечайте на вопросы — и я угадаю!</footer>
     </div>
 
     <script>
-        // Здесь можно добавить интерактивность
-        document.querySelector('.btn-login').addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('Форма входа будет здесь');
-        });
-        
-        document.querySelector('.btn-register').addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('Форма регистрации будет здесь');
-        });
+        (function() {
+            // --- Элементы DOM ---
+            const guessSpan = document.getElementById('guess');
+            const lowSpan = document.getElementById('low');
+            const highSpan = document.getElementById('high');
+            const attemptsSpan = document.getElementById('attempts');
+            const messageDiv = document.getElementById('message');
+
+            const lessBtn = document.getElementById('lessBtn');
+            const equalBtn = document.getElementById('equalBtn');
+            const greaterBtn = document.getElementById('greaterBtn');
+            const restartBtn = document.getElementById('restartBtn');
+
+            // --- Состояние игры ---
+            let low = 1;                 // нижняя граница
+            let high = 100;              // верхняя граница
+            let currentGuess = 50;        // текущее предположение
+            let attempts = 0;             // счётчик попыток
+            let gameActive = true;         // активно ли угадывание
+
+            // --- Вспомогательные функции ---
+
+            // Вычисляет новое предположение на основе low/high и обновляет currentGuess
+            function computeGuess() {
+                if (low > high) {
+                    // Диапазон пуст — выходим, игра сломана
+                    return null;
+                }
+                return Math.floor((low + high) / 2);
+            }
+
+            // Обновить интерфейс: число, границы, попытки
+            function refreshUI() {
+                guessSpan.textContent = currentGuess;
+                lowSpan.textContent = low;
+                highSpan.textContent = high;
+                attemptsSpan.textContent = attempts;
+            }
+
+            // Блокировка/разблокировка кнопок действий (кроме restart)
+            function setButtonsEnabled(enabled) {
+                lessBtn.disabled = !enabled;
+                equalBtn.disabled = !enabled;
+                greaterBtn.disabled = !enabled;
+            }
+
+            // Проверка на противоречие (low > high) — вызывать после изменения диапазона
+            function checkContradiction() {
+                if (low > high) {
+                    gameActive = false;
+                    setButtonsEnabled(false);
+                    messageDiv.innerHTML = '❌ <strong>Противоречие!</strong> Похоже, вы ошиблись в ответах. Число не может быть одновременно меньше и больше. Начните заново.';
+                    return true; // есть противоречие
+                }
+                return false; // всё хорошо
+            }
+
+            // Завершение игры с победой (когда угадали)
+            function winGame() {
+                gameActive = false;
+                setButtonsEnabled(false);
+                messageDiv.innerHTML = `🎉 <strong>Ура! Я угадал число ${currentGuess} за ${attempts} ${getAttemptsWord(attempts)}.</strong> 🎉`;
+            }
+
+            // Склонение слова "попытка"
+            function getAttemptsWord(n) {
+                if (n % 10 === 1 && n % 100 !== 11) return 'попытку';
+                if ([2,3,4].includes(n % 10) && ![12,13,14].includes(n % 100)) return 'попытки';
+                return 'попыток';
+            }
+
+            // Начать новую игру (сброс)
+            function newGame() {
+                low = 1;
+                high = 100;
+                attempts = 0;
+                gameActive = true;
+                currentGuess = computeGuess(); // всегда будет 50 при 1-100
+                refreshUI();
+                setButtonsEnabled(true);
+                messageDiv.innerHTML = '👀 Загадайте число от 1 до 100 и отвечайте кнопками.';
+            }
+
+            // --- Обработчики событий ---
+
+            // Кнопка "Меньше"
+            lessBtn.addEventListener('click', function() {
+                if (!gameActive) return;
+
+                // Проверка: если текущее предположение уже минимально возможное, то дальше меньше быть не может
+                if (currentGuess <= low) {
+                    // Технически currentGuess всегда в [low, high], но подстрахуемся
+                    messageDiv.innerHTML = '⚠️ Вы сказали "меньше", но число не может быть меньше нижней границы. Проверьте ответы.';
+                    return;
+                }
+
+                // Сужаем диапазон сверху
+                high = currentGuess - 1;
+                attempts++;
+
+                if (checkContradiction()) {
+                    refreshUI(); // обновим отображение границ
+                    return;
+                }
+
+                // Вычисляем новое предположение
+                const newGuess = computeGuess();
+                if (newGuess === null) {
+                    checkContradiction(); // установит сообщение и gameActive=false
+                    refreshUI();
+                    return;
+                }
+                currentGuess = newGuess;
+                refreshUI();
+
+                // Если границы сошлись в одной точке — это ещё не победа, компьютер назовёт это число позже,
+                // а победа наступит только при нажатии "Угадал".
+                // Но если low === high, то текущее предположение и есть это число.
+                // Можно ничего не делать, ждём нажатия "Угадал".
+            });
+
+            // Кнопка "Больше"
+            greaterBtn.addEventListener('click', function() {
+                if (!gameActive) return;
+
+                if (currentGuess >= high) {
+                    messageDiv.innerHTML = '⚠️ Вы сказали "больше", но число не может быть больше верхней границы. Проверьте ответы.';
+                    return;
+                }
+
+                low = currentGuess + 1;
+                attempts++;
+
+                if (checkContradiction()) {
+                    refreshUI();
+                    return;
+                }
+
+                const newGuess = computeGuess();
+                if (newGuess === null) {
+                    checkContradiction();
+                    refreshUI();
+                    return;
+                }
+                currentGuess = newGuess;
+                refreshUI();
+            });
+
+            // Кнопка "Угадал!" (победа)
+            equalBtn.addEventListener('click', function() {
+                if (!gameActive) return;
+
+                // Поздравляем — число угадано
+                attempts++;  // последняя удачная попытка
+                refreshUI();  // обновим счётчик
+                winGame();
+            });
+
+            // Кнопка перезапуска
+            restartBtn.addEventListener('click', function() {
+                newGame();
+            });
+
+            // Инициализация: первый запуск
+            newGame();
+
+            // Дополнительная страховка: если по какой-то причине кнопки "Угадал" нажали раньше, чем сузился диапазон,
+            // мы всё равно корректно завершим. Если же диапазон пуст, но игра ещё активна — это странно, проверим.
+            // При каждом изменении low/high мы вызываем checkContradiction, он деактивирует кнопки.
+        })();
     </script>
 </body>
 </html>
