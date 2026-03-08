@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Угадай число — компьютер против вас</title>
+    <title>Угадай число 1 — 1 000 000</title>
     <style>
         * {
             box-sizing: border-box;
@@ -28,7 +28,7 @@
             border-radius: 48px;
             box-shadow: 0 30px 50px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.08);
             padding: 40px 32px;
-            max-width: 560px;
+            max-width: 620px;
             width: 100%;
             transition: all 0.2s ease;
             color: #e9f0ff;
@@ -203,15 +203,15 @@
 <body>
     <div class="container">
         <h1>🔮 УГАДАЙ ЧИСЛО</h1>
-        <div class="subhead">Задумайте число от 1 до 100, а я отгадаю</div>
+        <div class="subhead">Задумайте число от 1 до 1 000 000, а я отгадаю</div>
 
         <!-- Основной блок с предположением -->
         <div class="guess-box">
             <div class="guess-display">
-                <span id="guess">50</span> ?
+                <span id="guess">500 000</span> ?
             </div>
             <div class="range-info">
-                🎯 диапазон: <span id="low">1</span> — <span id="high">100</span>
+                🎯 диапазон: <span id="low">1</span> — <span id="high">1 000 000</span>
             </div>
             <div class="attempts">
                 💡 попыток: <span id="attempts">0</span>
@@ -247,55 +247,53 @@
             const greaterBtn = document.getElementById('greaterBtn');
             const restartBtn = document.getElementById('restartBtn');
 
-            // --- Состояние игры ---
-            let low = 1;                 // нижняя граница
-            let high = 100;              // верхняя граница
-            let currentGuess = 50;        // текущее предположение
-            let attempts = 0;             // счётчик попыток
-            let gameActive = true;         // активно ли угадывание
+            // --- Состояние игры (диапазон 1–1 000 000) ---
+            let low = 1;
+            let high = 1_000_000;          // верхняя граница
+            let currentGuess = 500_000;      // стартовое предположение (mid)
+            let attempts = 0;
+            let gameActive = true;
 
             // --- Вспомогательные функции ---
 
             // Вычисляет новое предположение на основе low/high и обновляет currentGuess
             function computeGuess() {
-                if (low > high) {
-                    // Диапазон пуст — выходим, игра сломана
-                    return null;
-                }
+                if (low > high) return null;
                 return Math.floor((low + high) / 2);
             }
 
-            // Обновить интерфейс: число, границы, попытки
+            // Обновить интерфейс: число, границы, попытки (с учётом форматирования тысяч)
             function refreshUI() {
-                guessSpan.textContent = currentGuess;
-                lowSpan.textContent = low;
-                highSpan.textContent = high;
+                guessSpan.textContent = currentGuess.toLocaleString('ru-RU');
+                lowSpan.textContent = low.toLocaleString('ru-RU');
+                highSpan.textContent = high.toLocaleString('ru-RU');
                 attemptsSpan.textContent = attempts;
             }
 
-            // Блокировка/разблокировка кнопок действий (кроме restart)
+            // Блокировка/разблокировка кнопок действий
             function setButtonsEnabled(enabled) {
                 lessBtn.disabled = !enabled;
                 equalBtn.disabled = !enabled;
                 greaterBtn.disabled = !enabled;
             }
 
-            // Проверка на противоречие (low > high) — вызывать после изменения диапазона
+            // Проверка на противоречие (low > high)
             function checkContradiction() {
                 if (low > high) {
                     gameActive = false;
                     setButtonsEnabled(false);
                     messageDiv.innerHTML = '❌ <strong>Противоречие!</strong> Похоже, вы ошиблись в ответах. Число не может быть одновременно меньше и больше. Начните заново.';
-                    return true; // есть противоречие
+                    return true;
                 }
-                return false; // всё хорошо
+                return false;
             }
 
-            // Завершение игры с победой (когда угадали)
+            // Завершение игры с победой
             function winGame() {
                 gameActive = false;
                 setButtonsEnabled(false);
-                messageDiv.innerHTML = `🎉 <strong>Ура! Я угадал число ${currentGuess} за ${attempts} ${getAttemptsWord(attempts)}.</strong> 🎉`;
+                const word = getAttemptsWord(attempts);
+                messageDiv.innerHTML = `🎉 <strong>Ура! Я угадал число ${currentGuess.toLocaleString('ru-RU')} за ${attempts} ${word}.</strong> 🎉`;
             }
 
             // Склонение слова "попытка"
@@ -305,57 +303,46 @@
                 return 'попыток';
             }
 
-            // Начать новую игру (сброс)
+            // Начать новую игру
             function newGame() {
                 low = 1;
-                high = 100;
+                high = 1_000_000;
                 attempts = 0;
                 gameActive = true;
-                currentGuess = computeGuess(); // всегда будет 50 при 1-100
+                currentGuess = computeGuess(); // будет 500000
                 refreshUI();
                 setButtonsEnabled(true);
-                messageDiv.innerHTML = '👀 Загадайте число от 1 до 100 и отвечайте кнопками.';
+                messageDiv.innerHTML = '👀 Загадайте число от 1 до 1 000 000 и отвечайте кнопками.';
             }
 
             // --- Обработчики событий ---
 
-            // Кнопка "Меньше"
             lessBtn.addEventListener('click', function() {
                 if (!gameActive) return;
 
-                // Проверка: если текущее предположение уже минимально возможное, то дальше меньше быть не может
                 if (currentGuess <= low) {
-                    // Технически currentGuess всегда в [low, high], но подстрахуемся
                     messageDiv.innerHTML = '⚠️ Вы сказали "меньше", но число не может быть меньше нижней границы. Проверьте ответы.';
                     return;
                 }
 
-                // Сужаем диапазон сверху
                 high = currentGuess - 1;
                 attempts++;
 
                 if (checkContradiction()) {
-                    refreshUI(); // обновим отображение границ
+                    refreshUI();
                     return;
                 }
 
-                // Вычисляем новое предположение
                 const newGuess = computeGuess();
                 if (newGuess === null) {
-                    checkContradiction(); // установит сообщение и gameActive=false
+                    checkContradiction();
                     refreshUI();
                     return;
                 }
                 currentGuess = newGuess;
                 refreshUI();
-
-                // Если границы сошлись в одной точке — это ещё не победа, компьютер назовёт это число позже,
-                // а победа наступит только при нажатии "Угадал".
-                // Но если low === high, то текущее предположение и есть это число.
-                // Можно ничего не делать, ждём нажатия "Угадал".
             });
 
-            // Кнопка "Больше"
             greaterBtn.addEventListener('click', function() {
                 if (!gameActive) return;
 
@@ -382,27 +369,20 @@
                 refreshUI();
             });
 
-            // Кнопка "Угадал!" (победа)
             equalBtn.addEventListener('click', function() {
                 if (!gameActive) return;
 
-                // Поздравляем — число угадано
-                attempts++;  // последняя удачная попытка
-                refreshUI();  // обновим счётчик
+                attempts++;
+                refreshUI();
                 winGame();
             });
 
-            // Кнопка перезапуска
             restartBtn.addEventListener('click', function() {
                 newGame();
             });
 
-            // Инициализация: первый запуск
+            // Старт
             newGame();
-
-            // Дополнительная страховка: если по какой-то причине кнопки "Угадал" нажали раньше, чем сузился диапазон,
-            // мы всё равно корректно завершим. Если же диапазон пуст, но игра ещё активна — это странно, проверим.
-            // При каждом изменении low/high мы вызываем checkContradiction, он деактивирует кнопки.
         })();
     </script>
 </body>
